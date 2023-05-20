@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{blocks/head :: head(${title})}"></div>
+
+<body>
+<header th:replace="~{blocks/header :: header}"></header>
+
+<div class="container mx-auto" style="width: 50%">
+    <h1 class="mt-5 text-center">Узнайте оценку отзыва</h1>
+    <div class="row">
+        <form action="/review" method="get">
+            <div class="mb-3">
+                <label class="form-label" for="pros">Достоинства</label>
+                <textarea class="form-control" id="pros" name="pros" rows="3" th:text="${pros}"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="cons">Недостатки</label>
+                <textarea class="form-control" id="cons" name="cons" rows="3" th:text="${cons}"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="comment">Комментарий</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3" th:text="${comment}"></textarea>
+            </div>
+            <button class="btn btn-lg btn-info float-end" type="submit">Оценить</button>
+        </form>
+    </div>
+    <div th:hidden="${isHidden}" class="row mx-auto mt-3" th:style="'width: ' + ${320 + predicted * 50}+ 'px'">
+        <div style="font-size: xx-large; width: 320px" class="p-0">Ваш отзыв оценён в:</div>
+        <img th:if="${predicted != null}" th:each="i : ${#numbers.sequence( 1, predicted, 1)}"
+             alt="star"
+             class="p-0 align-self-center"
+             src="/star_pr.png" style="width: 50px; height: 50px">
+    </div>
+</div>
+
+</body>
+</html>
