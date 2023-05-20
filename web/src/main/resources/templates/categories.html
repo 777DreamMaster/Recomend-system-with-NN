@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{blocks/head :: head(${title})}"></div>
+
+<body>
+<header th:replace="~{blocks/header :: header}"></header>
+
+<div class="container">
+    <h1 class="mt-5" th:text="'Категории:'"></h1>
+    <div class="d-flex flex-row justify-content-between mt-5">
+        <div th:each="category: ${categories}" class="block" style="width: calc(100% / 3 - 2%);">
+            <div class="card " style="height: 250px">
+                <img th:src="${images.get(category.getId() - 1)}"
+                     class="img-thumbnail border-white align-self-center mt-2"
+                style="max-height: 200px; width: auto">
+                <a th:href="@{/category/{id}(id=${category.getId()})}" th:text="${category.getAltName() + '➔'}"
+                    class="text-black h4 position-absolute bottom-0 text-center"
+                            style="text-decoration: none; left: 0; right: 0">
+
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

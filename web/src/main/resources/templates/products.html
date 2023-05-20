@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{blocks/head :: head(${title})}"></div>
+
+<body>
+<header th:replace="~{blocks/header :: header}"></header>
+
+<div class="container">
+    <h1 class="mt-5" th:text="${category.getAltName()}"></h1>
+    <hr>
+    <div class="row mt-2">
+        <div class="col-10">
+            <div class="col-12 mt-3" style="width: 100%">
+                <div class="row border" style="min-height: 300px" th:each="product,iter : ${products}">
+                    <div class="col-4 align-self-center ">
+                        <img alt="Product Image"
+                             class="img-thumbnail border-white d-flex m-auto"
+                             style="max-height: 300px; max-width: 250px; height: 80%; width: auto"
+                             th:src="${product.getImageUrl()}">
+                    </div>
+                    <div class="col-8 py-3" style="background-color: #EDF1F7">
+                        <a class="h5" style="text-decoration: none; color: black"
+                           th:href="@{/product/{id}(id=${product.getId()})}"
+                           th:text="${product.getShortName()}"></a>
+                        <div th:text="${iter.index + 1}"></div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-10">
+                                <div th:each="property : ${product.jsonProperties()}">
+                                    <div class="m-0 d-inline-block text-secondary"
+                                         th:text="${property.getName()}"/>
+
+                                    <div class="m-0 d-inline-block "
+                                         th:text="${property.getValue()}"/>
+                                </div>
+                            </div>
+                            <div class="col-2">
+
+                                <h5 style="font-size: xx-large; height: 75px"
+                                    th:text="${product.getPrice() == null ? 0 : product.getPrice() + '₽'}"></h5>
+
+                                <div class="row">
+                                    <div style="width: 40px;" class="pe-0">
+                                        <img alt="prod"
+                                             class="p-0 align-self-center"
+                                             src="/reviews.png" style="width: 20px; height: 20px">
+                                    </div>
+                                    <div class="p-0" style="font-size: large; width: 20px"
+                                         th:text="${product.getReviews().size()}"></div>
+                                </div>
+                                <div class="row align-content-center" style="height: 60px">
+                                    <div class="" style="font-size: large; width: 50px"
+                                         th:text="${product.getAvgRating()}"></div>
+                                    <img alt="prod"
+                                         class="p-0 align-self-center"
+                                         src="/star.png" style="width: 30px; height: 30px">
+                                </div>
+                                <div class="row align-content-center">
+                                    <div style="font-size: large; width: 50px"
+                                         th:text="${product.getAvgPredRating()}"></div>
+                                    <img alt="prod"
+                                         class="p-0 align-self-center"
+                                         src="/star_pr.png" style="width: 30px; height: 30px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="d-inline-block position-sticky" style="top: 28%">
+                <form method="get" th:action="@{/category/{id}/filtered(id=${category.getId()})}">
+                    <select class="form-select" name="type">
+                        <option value="" selected>Сортировка</option>
+                        <option value="simple"
+                                th:selected="${'simple'.equals(type)}">По оценке</option>
+                        <option value="predicted"
+                                th:selected="${'predicted'.equals(type)}">По предсказанной</option>
+                    </select>
+                    <div style="font-size: large;" class="mt-3">Цена</div>
+                    <div class="input-group input-group-sm mb-3">
+                        <span class="input-group-text">от</span>
+                        <input id="from" type="number" name="from"
+                               th:value="${from}"
+                               placeholder="0" class="form-control">
+                        <span class="input-group-text">до</span>
+                        <input id="to" type="number" name="to"
+                               th:value="${to}"
+                               placeholder="100000" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success">Применить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
